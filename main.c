@@ -86,6 +86,7 @@ void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN 0 */
 extern QueueHandle_t messageQueue;
 extern char message[7];
+uint8_t rx_buff[8] = { 0 };
 /* USER CODE END 0 */
 
 /**
@@ -165,6 +166,7 @@ int main(void)
   MX_TouchGFX_Init();
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
+
   /* USER CODE BEGIN 2 */
   if (BSP_SDRAM_SingleTest() != 0)
   {
@@ -180,6 +182,7 @@ int main(void)
       Error_Handler();
     }
 
+  HAL_UART_Receive_IT(&huart4, rx_buff, sizeof(rx_buff));
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -316,6 +319,27 @@ void Button_Interrupt_Task(void *argument)
 			HAL_Delay(100);
 			HAL_GPIO_WritePin(BUTTON_INT_TRIGGER_GPIO_Port, BUTTON_INT_TRIGGER_Pin, GPIO_PIN_RESET);
 		}
+	}
+}
+
+
+void UART4_IRQHandler(void)
+{
+	HAL_UART_IRQHandler(&huart4);
+}
+
+
+int interruptCounter = 0;
+extern osMessageQueueId_t uartQueueHandle;
+extern uint8_t uartData;
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance == UART4)
+	{
+		interruptCounter++;
+//		uartData = rx_buff[0];
+//		osMessageQueuePut(uartQueueHandle, &uartData, 0U, 0);
+		HAL_UART_Receive_IT(&huart4, rx_buff, sizeof(rx_buff));
 	}
 }
 /* USER CODE END 4 */
