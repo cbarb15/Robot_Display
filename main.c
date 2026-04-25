@@ -86,7 +86,7 @@ void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN 0 */
 extern QueueHandle_t messageQueue;
 extern char message[7];
-uint8_t rx_buff[8] = { 0 };
+uint8_t rx_buff[12] = { 0 };
 /* USER CODE END 0 */
 
 /**
@@ -315,9 +315,9 @@ void Button_Interrupt_Task(void *argument)
 	{
 		if(xQueueReceive(messageQueue, message, 0) == pdPASS)
 		{
-			HAL_GPIO_WritePin(BUTTON_INT_TRIGGER_GPIO_Port, BUTTON_INT_TRIGGER_Pin, GPIO_PIN_SET);
-			HAL_Delay(100);
 			HAL_GPIO_WritePin(BUTTON_INT_TRIGGER_GPIO_Port, BUTTON_INT_TRIGGER_Pin, GPIO_PIN_RESET);
+			HAL_Delay(100);
+			HAL_GPIO_WritePin(BUTTON_INT_TRIGGER_GPIO_Port, BUTTON_INT_TRIGGER_Pin, GPIO_PIN_SET);
 		}
 	}
 }
