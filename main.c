@@ -315,9 +315,9 @@ void Button_Interrupt_Task(void *argument)
 	{
 		if(xQueueReceive(messageQueue, message, 0) == pdPASS)
 		{
-			HAL_GPIO_WritePin(BUTTON_INT_TRIGGER_GPIO_Port, BUTTON_INT_TRIGGER_Pin, GPIO_PIN_RESET);
-			HAL_Delay(100);
 			HAL_GPIO_WritePin(BUTTON_INT_TRIGGER_GPIO_Port, BUTTON_INT_TRIGGER_Pin, GPIO_PIN_SET);
+			HAL_Delay(100);
+			HAL_GPIO_WritePin(BUTTON_INT_TRIGGER_GPIO_Port, BUTTON_INT_TRIGGER_Pin, GPIO_PIN_RESET);
 		}
 	}
 }
