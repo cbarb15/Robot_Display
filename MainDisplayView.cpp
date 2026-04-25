@@ -12,7 +12,6 @@ extern "C"
 MainDisplayView::MainDisplayView()
 {
 	messageQueue = xQueueCreate(10, sizeof(unsigned char));
-	BLEStatus.setVisible(true);
 }
 
 void MainDisplayView::setupScreen()
@@ -27,7 +26,14 @@ void MainDisplayView::tearDownScreen()
 
 void MainDisplayView::searchAndConnectBLE()
 {
-	Unicode::snprintf(BLEStatusBuffer, BLESTATUS_SIZE, "%s", touchgfx::TypedText(T_CONNECTED_STATUS).getText());
-	BLEStatus.invalidate();
+//	BLEStatus.setVisible(true);
+//	BLEStatus.invalidate();
 	xQueueSend(messageQueue, &message, 0);
 }
+
+void MainDisplayView::updateBLEStatus(string newBLEStatus)
+{
+//	Unicode::snprintf(BLEStatusBuffer, BLESTATUS_SIZE, "%s", touchgfx::TypedText(T_CONNECTED_STATUS).getText());
+//	BLEStatus.invalidate();
+}
+

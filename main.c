@@ -86,6 +86,8 @@ void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN 0 */
 extern QueueHandle_t messageQueue;
 extern char message[7];
+extern osMessageQueueId_t uartQueueHandle;
+extern uint8_t uartData;
 uint8_t rx_buff[16] = { 0 };
 /* USER CODE END 0 */
 
@@ -329,16 +331,12 @@ void UART4_IRQHandler(void)
 }
 
 
-int interruptCounter = 0;
-extern osMessageQueueId_t uartQueueHandle;
-extern uint8_t uartData;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart->Instance == UART4)
 	{
-		interruptCounter++;
-//		uartData = rx_buff[0];
-//		osMessageQueuePut(uartQueueHandle, &uartData, 0U, 0);
+		uartData  = 50;
+		osMessageQueuePut(uartQueueHandle, &uartData, 0U, 0);
 		HAL_UART_Receive_IT(&huart4, rx_buff, sizeof(rx_buff));
 	}
 }
