@@ -339,7 +339,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart->Instance == UART4)
 	{
-		uartData  = rx_buff[0];
 		osMessageQueuePut(uartQueueHandle, &rx_buff, 0U, 0);
 		HAL_UART_Receive_IT(&huart4, rx_buff, sizeof(rx_buff));
 	}
