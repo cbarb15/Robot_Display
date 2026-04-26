@@ -5,8 +5,7 @@
 
 extern "C"
 {
-    osMessageQueueId_t uartQueueHandle;
-//    uint8_t uartData[16] = { 0 };
+	extern osMessageQueueId_t uartQueueHandle;
     uint8_t uartData = 0;
 }
 
@@ -18,7 +17,7 @@ Model::Model() : modelListener(0)
 osStatus_t messageStatus;
 void Model::tick()
 {
-	uint8_t newStatus;
+	static uint8_t newStatus;
 
 	messageStatus = osMessageQueueGet(uartQueueHandle, &newStatus, 0U, 0);
 	if(messageStatus == osOK)
