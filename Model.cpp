@@ -14,16 +14,15 @@ Model::Model() : modelListener(0)
 }
 
 osStatus_t messageStatus;
+
 void Model::tick()
 {
-//	static uint8_t newStatus;
-	static uint8_t newStatus[16];
+	BLEStatus newStatus;
 
 	messageStatus = osMessageQueueGet(uartQueueHandle, &newStatus, 0U, 0);
-	if(messageStatus == osOK)
+	if(messageStatus == osOK && newStatus != 0)
 	{
-		printf("Got status");
-
+		bleStatus = newStatus;
 		modelListener->notifyBLEStatusChange();
 	}
 }

@@ -1,8 +1,6 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
-#include <string>
-
 using namespace std;
 
 class ModelListener;
@@ -12,16 +10,23 @@ class Model
 public:
     Model();
 
+    enum BLEStatus
+    {
+    	CONNECTED = 1,
+    	DISCONNECTED,
+    	SEARCHING
+    };
+
     void bind(ModelListener* listener)
     {
         modelListener = listener;
     }
 
-    void setBLEStatus(string newStatus) {
+    void setBLEStatus(BLEStatus newStatus) {
     		bleStatus = newStatus;
         }
 
-    string getBLEStatus() {
+    BLEStatus getBLEStatus() {
     	return bleStatus;
     }
 
@@ -31,7 +36,7 @@ protected:
 
 
 private:
-    string bleStatus;
+    BLEStatus bleStatus;
 };
 
 #endif // MODEL_HPP

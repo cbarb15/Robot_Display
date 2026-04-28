@@ -26,14 +26,26 @@ void MainDisplayView::tearDownScreen()
 
 void MainDisplayView::searchAndConnectBLE()
 {
-//	BLEStatus.setVisible(true);
-//	BLEStatus.invalidate();
+	BLEStatus.setVisible(true);
+	BLEStatus.invalidate();
 	xQueueSend(messageQueue, &message, 0);
 }
 
-void MainDisplayView::updateBLEStatus(string newBLEStatus)
+void MainDisplayView::updateBLEStatus(Model::BLEStatus newBLEStatus)
 {
-//	Unicode::snprintf(BLEStatusBuffer, BLESTATUS_SIZE, "%s", touchgfx::TypedText(T_CONNECTED_STATUS).getText());
-//	BLEStatus.invalidate();
+	if(newBLEStatus == Model::CONNECTED)
+	{
+		BLEStatus.setVisible(true);
+		BLEStatus.setColor(touchgfx::Color::getColorFromRGB(0, 255, 120));
+		Unicode::snprintf(BLEStatusBuffer, BLESTATUS_SIZE, "%s", touchgfx::TypedText(T_CONNECTED_STATUS).getText());
+		BLEStatus.invalidate();
+	}
+	else if(newBLEStatus == Model::DISCONNECTED)
+	{
+		BLEStatus.setVisible(false);
+		BLEStatus.invalidate();
+	}
+
+
 }
 
