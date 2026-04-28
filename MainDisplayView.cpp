@@ -12,6 +12,7 @@ extern "C"
 MainDisplayView::MainDisplayView()
 {
 	messageQueue = xQueueCreate(10, sizeof(unsigned char));
+	bleStatus = Model::DISCONNECTED;
 }
 
 void MainDisplayView::setupScreen()
@@ -26,13 +27,19 @@ void MainDisplayView::tearDownScreen()
 
 void MainDisplayView::searchAndConnectBLE()
 {
-	BLEStatus.setVisible(true);
-	BLEStatus.invalidate();
-	xQueueSend(messageQueue, &message, 0);
+	if(bleStatus == Model::DISCONNECTED)
+	{
+		BLEStatus.setVisible(true);
+		BLEStatus.setColor(touchgfx::Color::getColorFromRGB(181, 215, 253));
+		Unicode::snprintf(BLEStatusBuffer, BLESTATUS_SIZE, "%s", touchgfx::TypedText(T_SEARCHING).getText());
+		BLEStatus.invalidate();
+		xQueueSend(messageQueue, &message, 0);
+	}
 }
 
 void MainDisplayView::updateBLEStatus(Model::BLEStatus newBLEStatus)
 {
+	bleStatus = newBLEStatus;
 	if(newBLEStatus == Model::CONNECTED)
 	{
 		BLEStatus.setVisible(true);

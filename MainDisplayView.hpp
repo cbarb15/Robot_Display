@@ -18,8 +18,8 @@ public:
     virtual void tearDownScreen();
     virtual void searchAndConnectBLE();
     void updateBLEStatus(Model::BLEStatus newStatus);
-protected:
-    Model::BLEStatus stat;
+private:
+    Model::BLEStatus bleStatus;
 };
 
 #endif // MAINDISPLAYVIEW_HPP
